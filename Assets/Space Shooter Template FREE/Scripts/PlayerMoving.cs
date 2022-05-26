@@ -22,6 +22,8 @@ public class PlayerMoving : MonoBehaviour {
     bool controlIsActive = true; 
 
     public static PlayerMoving instance; //unique instance of the script for easy access to the script
+    [SerializeField] private float mouseSpeed = 30;
+    [SerializeField] private float keyboardSpeed = 20;
 
     private void Awake()
     {
@@ -45,8 +47,20 @@ public class PlayerMoving : MonoBehaviour {
             {
                 Vector3 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition); //calculating mouse position in the worldspace
                 mousePosition.z = transform.position.z;
-                transform.position = Vector3.MoveTowards(transform.position, mousePosition, 30 * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, mousePosition, mouseSpeed * Time.deltaTime);
             }
+
+            // support for keyboard controls
+            if (Input.GetKey(KeyCode.A))
+            {
+                transform.Translate(Vector3.left * keyboardSpeed * Time.deltaTime);
+            }
+
+            if (Input.GetKey(KeyCode.D))
+            {
+                transform.Translate(Vector3.right * keyboardSpeed * Time.deltaTime);
+            }
+
 #endif
 
 #if UNITY_IOS || UNITY_ANDROID //if current platform is mobile, 
